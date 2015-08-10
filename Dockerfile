@@ -1,32 +1,30 @@
-FROM debian:jessie
-# Built from debian, so we have no clutter (like mysql).
+FROM php:5.6-apache
 
-ENV DEBIAN_FRONTEND=noninteractive SYMFONY_ENV=prod
+ENV SYMFONY_ENV=prod
 
-RUN apt-get update -q && apt-get install -yq git php5 php5-intl php5-curl libapache2-mod-php5 curl
+RUN apt-get update -q && apt-get install -yq git libicu-dev zlib1g-dev libicu52 zlib1g --no-install-recommends
 
-# Apache stuff
+# PHP config
 # Adjust timezone to match server time...
-RUN echo 'date.timezone = "Europe/Zurich"' >> /etc/php5/apache2/php.ini && \
-    echo 'date.timezone = "Europe/Zurich"' >> /etc/php5/cli/php.ini
+RUN echo 'date.timezone = "Europe/Zurich"' >> /usr/local/etc/php/php.ini && \
+    echo 'short_open_tag = off' >> /usr/local/etc/php/php.ini
 
-RUN a2enmod php5 && \
-    a2enmod rewrite
-ADD mozillach.conf /etc/apache2/sites-enabled/000-default.conf
+RUN docker-php-ext-install intl mbstring zip opcache
 
-# Setup the environement
-RUN git clone https://github.com/mozillach/mozilla.ch.git /var/www/main
+# Clean up packages
+RUN apt-get purge -y --auto-remove libicu-dev zlib1g-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-# Own the cache and log dir, so apache can write to them
-RUN chown -R www-data /var/www/main/app/cache && \
-    chown -R www-data /var/www/main/app/logs
+# Apache config
+RUN a2enmod rewrite
+COPY mozillach.conf /etc/apache2/sites-enabled/mozillach.conf
 
 # Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 
-# Open port 80
-EXPOSE 80
+# Setup the environement
+RUN git clone https://github.com/mozillach/mozilla.ch.git /var/www/html
 
 # Run stuff
-ADD start.sh /opt/start.sh
+COPY start.sh /opt/start.sh
 CMD [ "/opt/start.sh" ]
