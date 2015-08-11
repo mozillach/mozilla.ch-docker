@@ -23,7 +23,7 @@ COPY mozillach.conf /etc/apache2/sites-enabled/mozillach.conf
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 
 # Setup the environement
-RUN git clone https://github.com/mozillach/mozilla.ch.git .
+RUN git clone -b release --depth 1 https://github.com/mozillach/mozilla.ch.git .
 
 # Run stuff
 COPY start.sh /opt/start.sh
