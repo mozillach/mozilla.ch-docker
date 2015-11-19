@@ -7,10 +7,6 @@ RUN apt-get update -q && apt-get install -yq git libicu-dev zlib1g-dev libicu52 
 # PHP config
 RUN docker-php-ext-install intl mbstring zip opcache
 
-# Adjust timezone to match server time...
-RUN echo 'date.timezone = "Europe/Zurich"' >> $PHP_INI_DIR/php.ini && \
-    echo 'short_open_tag = off' >> $PHP_INI_DIR/php.ini
-
 # Clean up packages
 RUN apt-get purge -y --auto-remove libicu-dev zlib1g-dev && \
     rm -rf /var/lib/apt/lists/*
