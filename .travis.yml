@@ -1,0 +1,12 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t colinfrei/mozillachtest .
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push
+#  - docker run -h mozilla.ch -p 80:80 -d -e "MOZILLAINS_KEY={mozillians API key}" colinfrei/mozillachtest
+
+#notifications:
+#  irc: "irc.mozilla.org#mozilla.ch"
