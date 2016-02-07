@@ -5,7 +5,7 @@ services:
 before_install:
   - docker build -t colinfrei/mozillachtest .
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push mozillachtest
+  - docker push colinfrei/mozillachtest
 #  - docker run -h mozilla.ch -p 80:80 -d -e "MOZILLAINS_KEY={mozillians API key}" colinfrei/mozillachtest
 
 #notifications:
