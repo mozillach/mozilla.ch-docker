@@ -15,5 +15,3 @@ Replace `{mozillians API key}` with a mozillians API key for the v2 API with pub
 Run `docker run -e MOZILLIANS_KEY={mozillians API key} mozillach/mozilla.ch` to start provisioning and then start apache.
 
 To run it in a deployment situation use `docker run -h mozilla.ch -p 80:80 -d -e "MOZILLAINS_KEY={mozillians API key}" mozillach/mozilla.ch`.
-
-foo
