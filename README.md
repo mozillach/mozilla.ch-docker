@@ -1,6 +1,6 @@
 # mozilla.ch Docker Image
 
-The files in this repository are used to generate a production image for
+**THIS REPO IS NO LONGER USED. Go to https://github.com/mozillach/mozilla.ch instead.** The files in this repository are used to generate a production image for
 mozilla.ch. It is available as mozillach/mozilla.ch from the docker hub.
 
 ## Creating the Image
